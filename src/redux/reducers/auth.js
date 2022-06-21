@@ -1,4 +1,4 @@
-import { AUTH_LOGIN, AUTH_LOGOUT } from "../actions/types";
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_TOKEN } from "../actions/types";
 
 const initialState = {
     loading: false,
@@ -8,7 +8,7 @@ const initialState = {
     isLogin: false,
 };
 
-export default auth = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
     switch (action.type) {
         case AUTH_LOGOUT.SUCCESS:
             return {
@@ -25,12 +25,17 @@ export default auth = (state = initialState, action) => {
                 ...state,
                 loading: true
             }
+            case AUTH_TOKEN.UPDATE:
+                return {
+                    ...state,
+                    token: action.payload.token
+                }
         case AUTH_LOGIN.SUCCESS:
             return {
                 ...state,
                 loading: false,
                 loaded: true,
-                user: action.payload.user,
+                user: action.payload.additionalInfo,
                 token: action.payload.token,
                 isLogin: true,
             }
@@ -48,3 +53,5 @@ export default auth = (state = initialState, action) => {
 
     }
 }
+
+export default auth;

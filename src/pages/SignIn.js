@@ -10,13 +10,22 @@ import {
   Input,
 } from "antd";
 import signinbg from "../assets/images/img-signin.jpg";
+import { authLogin } from "../redux/actions/auth";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const { Title } = Typography;
 const { Footer, Content } = Layout;
 
 
 const SignIn = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const onFinish = (values) => {
+    dispatch(authLogin(values, () => {
+      history.push('/dashboard')
+    }));
     console.log("Success:", values);
   };
 

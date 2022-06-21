@@ -1,5 +1,5 @@
 import http from "../../utils/http";
-import { AUTH_LOGIN, AUTH_LOGOUT } from "./types"
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_TOKEN } from "./types"
 
 const authLoginRequest = () => {
     return { type: AUTH_LOGIN.REQUEST };
@@ -18,19 +18,21 @@ export const authLoginReset = () => {
 };
 
 export const authLogin = ({ username, password }, cb) => {
+    console.log('request auth 1');
+
     return async(dispatch) => {
-        dispatch(authLoginRequest);
+        dispatch(authLoginRequest());
 
         try {
+            console.log('request auth');
             const response = await http.post('/api/login', {username, password});
-            if(response.code === 200) {
-                dispatch(authLoginSuccess(response));
-            }
+            dispatch(authLoginSuccess(response));
             if(typeof cb === Function && cb !== null && cb !== undefined) {
                 cb();
             }
 
         } catch(e) {
+            console.log('ERROR AUTH ACTION', e);
             dispatch(authLoginFailure());
         }
     };
@@ -55,7 +57,7 @@ export const authLogoutReset = () => {
 
 export const authLogout = ({ username, password }, cb) => {
     return async(dispatch) => {
-        dispatch(authLoginRequest);
+        dispatch(authLogoutRequest);
 
         try {
             const response = await http.post('/api/logout', {username, password});
@@ -71,3 +73,7 @@ export const authLogout = ({ username, password }, cb) => {
         }
     };
 };
+
+export const updateToken = () => {
+    return { type: AUTH_TOKEN.UPDATE }
+}

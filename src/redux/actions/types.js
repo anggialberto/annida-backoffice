@@ -3,6 +3,7 @@ import {defineAction} from 'redux-define';
 const REQUEST = 'REQUEST';
 const SUCCESS = 'SUCCESS';
 const FAILURE = 'FAILURE';
+const UPDATE = 'UPDATE';
 const RESET = 'RESET';
 const SHOW = 'SHOW';
 const HIDE = 'HIDE';
@@ -20,3 +21,9 @@ export const AUTH_LOGOUT = defineAction(
     [REQUEST, SUCCESS],
     APP_NAME_SPACE
 );
+
+export const AUTH_TOKEN = defineAction(
+    'AUTH_TOKEN',
+    [UPDATE],
+    APP_NAME_SPACE
+)

@@ -8,98 +8,103 @@ import {
   Space,
   Tag,
 } from "antd";
+import { useEffect, useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
+import http from "../../utils/http";
 
 const { Title } = Typography;
 
-
-const data = [
-  {
-    key: '1',
-    idNumber: '13454534',
-    fullname: 'John Brown',
-    birthDate: '2017-09-02',
-    gender: 'L',
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    idNumber: '13455234',
-    fullname: 'Jim Green',
-    birthDate: '2017-09-02',
-    gender: 'P',
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    idNumber: '13455234',
-    fullname: 'Joe Black',
-    birthDate: '2017-09-02',
-    age: 32,
-    gender: 'P',
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
-
 const RegistrationStudent = () => {
   const history = useHistory();
+  const [queryParams, setQueryParams] = useState({
+    page: 0,
+    size: 3,
+    sortBy: 'createdDate',
+    prefix: 'DESC'
+  })
+  const [registrationStudents, setRegistrationStudents] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  useEffect(() => {
+    const getRegistrationStudents = async () => {
+      setFetching(true);
+      const response = await http.get('/monitoring', {
+        params: queryParams
+      })
+      setRegistrationStudents(response)
+      console.log('response get student', response);
+      setFetching(false)
+    }
+    getRegistrationStudents();
+  }, [JSON.stringify(queryParams)])
 
   const columns = [
     {
-      title: 'ID Number',
-      dataIndex: 'idNumber',
-      key: 'idNumber',
-      render: (text) => <a onClick={() => history.push('/registration-student/38uhur')}>{text}</a>,
+      title: 'Ticket Number',
+      dataIndex: 'ticketNumber',
+      key: 'ticketNumber',
+      render: (text) => <a onClick={() => history.push('/registration-student/' + text)}>{text}</a>,
     },
     {
       title: 'Full Name',
-      dataIndex: 'fullname',
-      key: 'fullname',
-    },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
+      dataIndex: ['studentRegistration', 'fullname'],
+      key: ['studentRegistration', 'fullname'],
     },
     {
       title: 'Birth Date',
-      dataIndex: 'birthDate',
-      key: 'birtDate',
+      dataIndex: ['studentRegistration', 'birthDate'],
+      key: ['studentRegistration', 'birthDate'],
+    },
+    {
+      title: 'Gender',
+      dataIndex: ['studentRegistration', 'gender'],
+      key: ['studentRegistration', 'gender'],
+    },
+    {
+      title: 'Group',
+      dataIndex: ['studentRegistration', 'group'],
+      key: ['studentRegistration', 'group'],
     },
     {
       title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: ['studentRegistration', 'address'],
+      key: ['studentRegistration', 'address'],
     },
     {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-  
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-  
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      title: 'Phone Number',
+      dataIndex: ['studentRegistration', 'phoneNumber'],
+      key: ['studentRegistration', 'phoneNumber'],
     },
-  
+    {
+      title: 'Approval Document',
+      key: 'approvalDoc',
+      dataIndex: 'approvalDoc',
+      render: (text, record, index) => (
+        <Tag color={text ? 'success' : 'error'} key={index}>
+          {text ? 'VERIFIED' : 'NOT VALID'}
+        </Tag>
+      )
+    },
+    {
+      title: 'Approval Payment',
+      key: 'approvalPayment',
+      dataIndex: 'approvalPayment',
+      render: (text, record, index) => (
+        <Tag color={text ? 'success' : 'error'} key={index}>
+          {text ? 'PAID' : 'NOT YET PAID'}
+        </Tag>
+      )
+    },
+
   ];
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setQueryParams({
+      ...queryParams,
+      page: pagination.current - 1,
+      size: pagination.pageSize,
+    });
+  }
 
   return (
     <>
@@ -111,26 +116,22 @@ const RegistrationStudent = () => {
               className="criclebox tablespace mb-24"
               style={{paddingRight: 20}}
               title="Pendaftar"
-              // extra={
-              //   <>
-              //     <Radio.Group onChange={onChange} defaultValue="a">
-              //       <Radio.Button value="a">All</Radio.Button>
-              //       <Radio.Button value="b">ONLINE</Radio.Button>
-              //     </Radio.Group>
-              //   </>
-              // }
             >
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={data}
-                  pagination={true}
+                  loading={fetching}
+                  dataSource={registrationStudents?.data}
+                  onChange={handleTableChange}
+                  pagination={{
+                    defaultCurrent: queryParams.page + 1,
+                    defaultPageSize: queryParams.size,
+                    total: registrationStudents?.totalData
+                  }}
                   className="ant-border-space"
                 />
               </div>
             </Card>
-
-          
           </Col>
         </Row>
       </div>
