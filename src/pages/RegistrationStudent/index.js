@@ -7,6 +7,9 @@ import {
   Typography,
   Space,
   Tag,
+  Button,
+  Modal,
+  Input,
 } from "antd";
 import { useEffect, useState } from "react";
 
@@ -17,6 +20,12 @@ const { Title } = Typography;
 
 const RegistrationStudent = () => {
   const history = useHistory();
+  const [modalReject, setModalReject] = useState({
+    visible: false,
+    reason: '',
+    selectedId: '',
+  });
+  const [modalAprove, setModalApprove] = useState({visible: false, selectedId: ''});
   const [queryParams, setQueryParams] = useState({
     page: 0,
     size: 3,
@@ -25,16 +34,17 @@ const RegistrationStudent = () => {
   })
   const [registrationStudents, setRegistrationStudents] = useState([]);
   const [fetching, setFetching] = useState(false);
+
+  const getRegistrationStudents = async () => {
+    setFetching(true);
+    const response = await http.get('/monitoring', {
+      params: queryParams
+    })
+    setRegistrationStudents(response)
+    setFetching(false)
+  }
+
   useEffect(() => {
-    const getRegistrationStudents = async () => {
-      setFetching(true);
-      const response = await http.get('/monitoring', {
-        params: queryParams
-      })
-      setRegistrationStudents(response)
-      console.log('response get student', response);
-      setFetching(false)
-    }
     getRegistrationStudents();
   }, [JSON.stringify(queryParams)])
 
@@ -60,11 +70,7 @@ const RegistrationStudent = () => {
       dataIndex: ['studentRegistration', 'gender'],
       key: ['studentRegistration', 'gender'],
     },
-    {
-      title: 'Group',
-      dataIndex: ['studentRegistration', 'group'],
-      key: ['studentRegistration', 'group'],
-    },
+
     {
       title: 'Address',
       dataIndex: ['studentRegistration', 'address'],
@@ -77,23 +83,147 @@ const RegistrationStudent = () => {
     },
     {
       title: 'Approval Document',
-      key: 'approvalDoc',
-      dataIndex: 'approvalDoc',
-      render: (text, record, index) => (
-        <Tag color={text ? 'success' : 'error'} key={index}>
-          {text ? 'VERIFIED' : 'NOT VALID'}
-        </Tag>
-      )
+      key: 'approvalDocStatus',
+      dataIndex: 'approvalDocStatus',
+      render: (text, record, index) => {
+        console.log('log approvalDoc', text);
+        const status = () => {
+          switch (text) {
+            case 0:
+              return {
+                message: 'Waiting Approval Document',
+                color: 'lime'
+              }
+            case 1:
+              return {
+                message: 'Waiting Approval Payment',
+                color: 'lime'
+              }
+            case 2:
+              return {
+                message: 'Approved',
+                color: 'success'
+              }
+            case 3:
+              return {
+                message: 'Reject',
+                color: 'error'
+              }
+            case 4:
+              return {
+                message: 'Pending',
+                color: 'orange'
+              }
+            case 5:
+              return {
+                message: 'Failed',
+                color: 'error'
+              }
+            case 6:
+              return {
+                message: 'Invalid Data',
+                color: 'yellow'
+              }
+            case 7:
+              return {
+                message: 'Document Data has been updated',
+                color: 'blue'
+              }
+            case 8:
+              return {
+                message: 'Payment Data has been updated',
+                color: 'blue'
+              }
+          }
+        }
+
+        return (
+          <Tag color={status().color} key={index}>
+            {status().message}
+          </Tag>
+        )
+      }
+      
     },
     {
       title: 'Approval Payment',
-      key: 'approvalPayment',
-      dataIndex: 'approvalPayment',
-      render: (text, record, index) => (
-        <Tag color={text ? 'success' : 'error'} key={index}>
-          {text ? 'PAID' : 'NOT YET PAID'}
-        </Tag>
-      )
+      key: 'approvalPaymentStatus',
+      dataIndex: 'approvalPaymentStatus',
+      render: (text, record, index) => {
+        const status = () => {
+          switch (text) {
+            case 0:
+              return {
+                message: 'Waiting Approval Document',
+                color: 'lime'
+              }
+            case 1:
+              return {
+                message: 'Waiting Approval Payment',
+                color: 'lime'
+              }
+            case 2:
+              return {
+                message: 'Approved',
+                color: 'success'
+              }
+            case 3:
+              return {
+                message: 'Reject',
+                color: 'error'
+              }
+            case 4:
+              return {
+                message: 'Pending',
+                color: 'orange'
+              }
+            case 5:
+              return {
+                message: 'Failed',
+                color: 'error'
+              }
+            case 6:
+              return {
+                message: 'Invalid Data',
+                color: 'yellow'
+              }
+            case 7:
+              return {
+                message: 'Document Data has been updated',
+                color: 'blue'
+              }
+            case 8:
+              return {
+                message: 'Payment Data has been updated',
+                color: 'blue'
+              }
+          }
+        }
+
+        return (
+          <Tag color={status().color} key={index}>
+            {status().message}
+          </Tag>
+        )
+      }
+    },
+  
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record, index) => {
+        return (
+          <div style={{ display: 'flex', gap: 10 }}>
+            {([0, 1, 7, 8].includes(record.approvalDocStatus) && [0, 1, 7, 8].includes(record.approvalPaymentStatus)) && <Button type="primary" onClick={() => {
+              setModalApprove({...modalAprove, visible: true, selectedId: record.id})
+            }}>Approve</Button>}
+            {([0, 1, 7, 8].includes(record.approvalDocStatus) && [0, 1, 7, 8].includes(record.approvalPaymentStatus)) && <Button type="primary" danger onClick={() => {
+              setModalReject({...modalReject, visible: true, selectedId: record.id})
+            }}>Reject</Button>}
+
+          </div>
+        )
+      }
     },
 
   ];
@@ -114,7 +244,7 @@ const RegistrationStudent = () => {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              style={{paddingRight: 20}}
+              style={{ paddingRight: 20 }}
               title="Pendaftar"
             >
               <div className="table-responsive">
@@ -135,6 +265,60 @@ const RegistrationStudent = () => {
           </Col>
         </Row>
       </div>
+
+
+      <Modal
+        visible={modalReject.visible}
+        title="Reject"
+        onOk={null}
+        onCancel={null}
+        footer={null}
+      >
+        <p style={{fontWeight: "bold"}}>Reason</p>
+        <Input.TextArea value={modalReject.reason} onChange={(e) => {
+          console.log('Input.TextArea', e);
+          setModalReject({...modalReject, reason: e.target.value})
+        }} style={{ maxHeight: 200, minHeight: 200 }}></Input.TextArea>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 20, paddingTop: 20}}>
+          <Button type="primary" disabled={!modalReject.reason.length} onClick={() => {
+            http.post('/admin/monitoring/reject/', {
+              id: modalReject.selectedId,
+              reason: modalReject.reason
+            })
+            setModalReject({visible: false, reason: '', selectedId: ''})
+            getRegistrationStudents();
+          }}>Submit</Button>
+          <Button type="ghost" onClick={() => {
+            setModalReject({visible: false, reason: '', selectedId: ''})
+          }}>Cancel</Button>
+        </div>
+
+      </Modal>
+
+
+      <Modal
+        visible={modalAprove.visible}
+        title="Approve"
+        onOk={null}
+        onCancel={null}
+        footer={null}
+      >
+        <p style={{fontWeight: "bold"}}>Apakah anda yakin melakukan approve?</p>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 20, paddingTop: 20}}>
+          <Button type="primary" onClick={() => {
+            http.post('/admin/monitoring/approve/' + modalAprove.selectedId)
+            setModalApprove({visible: false, selectedId: ''})
+            getRegistrationStudents();
+          }}>Submit</Button>
+          <Button type="ghost" onClick={() => {
+            setModalApprove({visible: false, selectedId: ''})
+
+          }}>Cancel</Button>
+        </div>
+
+      </Modal>
+
+
     </>
   );
 }
