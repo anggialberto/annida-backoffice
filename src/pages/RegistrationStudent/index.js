@@ -207,17 +207,82 @@ const RegistrationStudent = () => {
         )
       }
     },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+      render: (text, record, index) => {
+        const status = () => {
+          switch (text) {
+            case 0:
+              return {
+                message: 'Waiting Approval Document',
+                color: 'lime'
+              }
+            case 1:
+              return {
+                message: 'Waiting Approval Payment',
+                color: 'lime'
+              }
+            case 2:
+              return {
+                message: 'Approved',
+                color: 'success'
+              }
+            case 3:
+              return {
+                message: 'Reject',
+                color: 'error'
+              }
+            case 4:
+              return {
+                message: 'Pending',
+                color: 'orange'
+              }
+            case 5:
+              return {
+                message: 'Failed',
+                color: 'error'
+              }
+            case 6:
+              return {
+                message: 'Invalid Data',
+                color: 'yellow'
+              }
+            case 7:
+              return {
+                message: 'Document Data has been updated',
+                color: 'blue'
+              }
+            case 8:
+              return {
+                message: 'Payment Data has been updated',
+                color: 'blue'
+              }
+          }
+        }
+
+        return (
+          <Tag color={status().color} key={index}>
+            {status().message}
+          </Tag>
+        )
+      }
+    },
   
     {
       title: 'Action',
       key: 'action',
       render: (text, record, index) => {
+        console.log('approvalDocStatus' + index, record.approvalDocStatus);
+        console.log('approvalDocStatus' + index, record.approvalPaymentStatus);
+
         return (
           <div style={{ display: 'flex', gap: 10 }}>
-            {([0, 1, 7, 8].includes(record.approvalDocStatus) && [0, 1, 7, 8].includes(record.approvalPaymentStatus)) && <Button type="primary" onClick={() => {
+            {([0, 1, 2, 7, 8].includes(record.approvalDocStatus) && [0, 1, 7, 8].includes(record.approvalPaymentStatus)) && <Button type="primary" onClick={() => {
               setModalApprove({...modalAprove, visible: true, selectedId: record.id})
             }}>Approve</Button>}
-            {([0, 1, 7, 8].includes(record.approvalDocStatus) && [0, 1, 7, 8].includes(record.approvalPaymentStatus)) && <Button type="primary" danger onClick={() => {
+            {([0, 1, 2, 7, 8].includes(record.approvalDocStatus) && [0, 1, 7, 8].includes(record.approvalPaymentStatus)) && <Button type="primary" danger onClick={() => {
               setModalReject({...modalReject, visible: true, selectedId: record.id})
             }}>Reject</Button>}
 
