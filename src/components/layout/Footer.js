@@ -9,24 +9,23 @@ function Footer() {
       <Row className="just">
         <Col xs={24} md={12} lg={12}>
           <div className="copyright">
-            © 2022, made with
-            {<HeartFilled />} by
-            <a href="#" className="font-weight-bold" target="_blank">
-              IMRONDEV
-            </a>
-            for a better web.
+          Annida Ul Hasanah © 2022 
+          {/* by
+          <a href="#" className="font-weight-bold" target="_blank">
+            IMRONDEV
+          </a>
+          for a better web. */}
           </div>
         </Col>
         <Col xs={24} md={12} lg={12}>
           <div className="footer-menu">
             <ul>
               <li className="nav-item">
-                <a
+                <a 
                   href="#"
                   className="nav-link text-muted"
-                  target="_blank"
-                >
-                  IMRONDEV
+                  target="_blank">
+                  Annida Ul Hasanah
                 </a>
               </li>
             

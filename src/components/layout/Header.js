@@ -299,7 +299,7 @@ function Header({
         
           <Link to="/sign-in" className="btn-sign-in">
             {profile}
-            <span>{user.userId}</span>
+            <span>{user.username}</span>
           </Link>
         
         </Col>

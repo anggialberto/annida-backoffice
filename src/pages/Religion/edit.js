@@ -16,39 +16,38 @@ import {
   import { useParams } from "react-router-dom";
   import { Link, useHistory} from "react-router-dom";
   import http from "../../utils/http";
-  
   const { Title } = Typography;
   
-  const EditSchoolYear = () => {
+  const EditReligion = () => {
     const history = useHistory();
-    const [schoolYear, setSchoolYearById] = useState()
+    const [religion, setReligionById] = useState()
     const { id } = useParams();
 
     const [form] = Form.useForm();
 
     useEffect(() => {
-      const getSchoolYearById = async () => {
-        const response = await http.get('/school-year/' + id);
+      const getReligionById = async () => {
+        const response = await http.get('/religion/' + id);
         console.log('response', response.data);
-        setSchoolYearById(response.data);
+        setReligionById(response.data);
         form.setFieldsValue({
-          content : response.data.content
+          religion : response.data.name
         })
       }
-      getSchoolYearById(id);
+      getReligionById(id);
     }, [])
   
-    const updateSchoolYear = async (data) => {
-      const response = await http.post('/school-year', data)
+    const updateReligion = async (data) => {
+      const response = await http.post('/religion', data)
       console.log('response data', response);
     }
-  
+
     const onFinish = (values) => {
-      const body = {...schoolYear,content:values.content}
-      updateSchoolYear(body)
-      message.info('Update School Year Successfully')
+      const body = {...religion,name:values.religion}
+      updateReligion(body)
+      message.info('Update Religion Successfully')
       console.log('onFinish', body);
-      history.push('/school-year')
+      history.push('/religion')
     }
   
     const onFailed = (values) => {
@@ -64,10 +63,10 @@ import {
                 bordered={false}
                 className="criclebox mb-24"
                 style={{paddingRight: 20}}
-                title="Edit School Year"
+                title="Edit Religion"
               >
                 <Form onFinish={onFinish} onFinishFailed={onFailed} style={{paddingLeft: 24}} form={form}>
-                  <Form.Item label={'School Year'} name={'content'}>
+                  <Form.Item label={'Religion'} name={'religion'}>
                     <Input />
                   </Form.Item>
   
@@ -75,7 +74,7 @@ import {
                   <Form.Item>
                     <Button type="primary" style={{paddingLeft: 30, paddingRight: 30, marginRight: 10}} htmlType='submit'>Update</Button>
                   </Form.Item>
-                  <Button type="ghost" style={{paddingLeft: 30, paddingRight: 30}} onClick={() => history.push('/school-year')}>Back</Button>
+                  <Button type="ghost" style={{paddingLeft: 30, paddingRight: 30}} onClick={() => history.push('/religion')}>Back</Button>
                 </Row>
 
                 </Form>
@@ -90,5 +89,5 @@ import {
     );
   }
   
-  export default EditSchoolYear;
+  export default EditReligion;
   
