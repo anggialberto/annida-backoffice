@@ -5,32 +5,15 @@ function Footer() {
   const { Footer: AntFooter } = Layout;
 
   return (
-    <AntFooter style={{ background: "#fafafa" }}>
+    <AntFooter style={{ background: "#fafafa", width: '100%', textAlign:'center'}}>
       <Row className="just">
         <Col xs={24} md={12} lg={12}>
-          <div className="copyright">
-          Annida Ul Hasanah © 2022 
-          {/* by
-          <a href="#" className="font-weight-bold" target="_blank">
-            IMRONDEV
-          </a>
-          for a better web. */}
+          <div className="copyright" style={{ textAlign:'left' }}>
+            Copyright © 2022 <b style={{ color:"#6eca8f" }}>ANNIDA UL HASANAH</b>
           </div>
         </Col>
         <Col xs={24} md={12} lg={12}>
-          <div className="footer-menu">
-            <ul>
-              <li className="nav-item">
-                <a 
-                  href="#"
-                  className="nav-link text-muted"
-                  target="_blank">
-                  Annida Ul Hasanah
-                </a>
-              </li>
             
-            </ul>
-          </div>
         </Col>
       </Row>
     </AntFooter>

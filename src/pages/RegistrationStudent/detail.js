@@ -193,8 +193,7 @@ const RegistrationDetail = () => {
                       <Text style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }} onClick={async () => {
                         const base64 = registrationDetail?.studentRegistration?.birthCertificate?.file
                         const fileName = registrationDetail?.studentRegistration?.birthCertificate?.name;
-                        const blob = new Blob([base64], { type: registrationDetail?.studentRegistration?.birthCertificate?.type });
-                        const href = await URL.createObjectURL(blob);
+                        const href = `data:${{ type: registrationDetail?.studentRegistration?.birthCertificate?.type }};base64,${base64}`
                         const link = document.createElement('a');
                         link.href = href;
                         link.download = fileName;
@@ -211,8 +210,7 @@ const RegistrationDetail = () => {
                       <Text style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }} onClick={async () => {
                         const base64 = registrationDetail?.studentRegistration?.familyCard?.file
                         const fileName = registrationDetail?.studentRegistration?.familyCard?.name;
-                        const blob = new Blob([base64], { type: registrationDetail?.studentRegistration?.familyCard?.type });
-                        const href = await URL.createObjectURL(blob);
+                        const href = `data:${{ type: registrationDetail?.studentRegistration?.familyCard?.type }};base64,${base64}`
                         const link = document.createElement('a');
                         link.href = href;
                         link.download = fileName;
