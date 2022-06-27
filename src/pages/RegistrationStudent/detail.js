@@ -77,7 +77,7 @@ const RegistrationDetail = () => {
                       <Text>{registrationDetail?.ticketNumber}</Text>
                     </Col>
                     <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
-                      <Text style={{ fontWeight: "bold" }}>No KTP</Text>
+                      <Text style={{ fontWeight: "bold" }}>NIK</Text>
                     </Col>
                     <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
                       <Text>{registrationDetail?.studentRegistration?.idNumber}</Text>
@@ -177,13 +177,6 @@ const RegistrationDetail = () => {
                       <Text>{registrationDetail?.studentRegistration?.mutationTo}</Text>
                     </Col>
 
-                    <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
-                      <Text style={{ fontWeight: "bold" }}>Mutation To</Text>
-                    </Col>
-                    <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
-                      <Text>{registrationDetail?.studentRegistration?.mutationTo}</Text>
-                    </Col>
-
 
                     <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
                       <Text style={{ fontWeight: "bold" }}>Akte Kelahiran</Text>
@@ -228,6 +221,23 @@ const RegistrationDetail = () => {
                       <Tag color={registrationDetail?.approvalDoc ? 'success' : 'error'}>
                         {registrationDetail?.approvalDoc ? 'VERIFIED' : 'NOT VALID'}
                       </Tag>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
+                      <Text style={{ fontWeight: "bold" }}>Bukti Pembayaran</Text>
+                    </Col>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
+                      <Text style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }} onClick={async () => {
+                        const base64 = registrationDetail?.studentRegistration?.proofOfPayment?.file
+                        const fileName = registrationDetail?.studentRegistration?.proofOfPayment?.name;
+                        const href = `data:${{ type: registrationDetail?.studentRegistration?.proofOfPayment?.type }};base64,${base64}`
+                        const link = document.createElement('a');
+                        link.href = href;
+                        link.download = fileName;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}>{registrationDetail?.studentRegistration?.proofOfPayment?.name}</Text>
                     </Col>
 
                     <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: 20 }}>
