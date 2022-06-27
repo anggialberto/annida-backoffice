@@ -109,7 +109,7 @@ const SignIn = () => {
         <Footer>
           <p className="copyright">
             {" "}
-            Copyright © 2021 IMRONDEV by <a href="#pablo">IMRONDEV</a>.{" "}
+            Copyright © 2022 <b style={{ color:"#6eca8f" }}>ANNIDA UL HASANAH</b>
           </p>
         </Footer>
       </Layout>
