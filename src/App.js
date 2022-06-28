@@ -33,7 +33,12 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        { !token && !isLogin && <Route path="/sign-in" exact component={SignIn} /> }
+        { !token && !isLogin && 
+          <>
+            <Route path="/sign-in" exact component={SignIn} /> 
+            <Redirect from="*" to="/sign-in" />
+          </>
+        }
 
         {token?.length && isLogin && USER_AFTER_LOGIN()}
 
