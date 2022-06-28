@@ -55,11 +55,39 @@ const Religion = () => {
       title: 'Created Date',
       dataIndex: 'createdDate',
       key: 'createdDate',
+      render: (text) => {
+        return (
+          <p>{new Intl.DateTimeFormat('id', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short',
+          }).format(new Date(text))}</p>
+        )
+      } 
     },
     {
       title: 'Last Updated',
       dataIndex: 'updatedDate',
       key: 'updatedDate',
+      render: (text) => {
+        return (
+          <p>{new Intl.DateTimeFormat('id', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short',
+          }).format(new Date(text))}</p>
+        )
+      } 
     },
     {
       title: 'Action',

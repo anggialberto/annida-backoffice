@@ -55,22 +55,23 @@ export const authLogoutReset = () => {
     return { type: AUTH_LOGOUT.RESET };
 };
 
-export const authLogout = ({ username, password }, cb) => {
+export const authLogout = () => {
     return async(dispatch) => {
-        dispatch(authLogoutRequest);
+        // dispatch(authLogoutRequest);
 
-        try {
-            const response = await http.post('/api/logout', {username, password});
-            if(response.code === 200) {
-                dispatch(authLogoutSuccess());
-            }
-            if(typeof cb === Function && cb !== null && cb !== undefined) {
-                cb();
-            }
+        // try {
+        //     const response = await http.post('/api/logout', {username, password});
+        //     if(response.code === 200) {
+        //         dispatch(authLogoutSuccess());
+        //     }
+        //     if(typeof cb === Function && cb !== null && cb !== undefined) {
+        //         cb();
+        //     }
 
-        } catch(e) {
-            dispatch(authLogoutFailure());
-        }
+        // } catch(e) {
+        //     dispatch(authLogoutFailure());
+        // }
+        dispatch(authLogoutSuccess());
     };
 };
 

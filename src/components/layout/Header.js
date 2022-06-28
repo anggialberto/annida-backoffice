@@ -25,7 +25,8 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { authLogout } from "../../redux/actions/auth";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -248,9 +249,11 @@ function Header({
   handleFixedNavbar,
 }) {
   const { Title, Text } = Typography;
+  const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
   const [sidenavType, setSidenavType] = useState("transparent");
+
   
   const {user} = useSelector((state) => state.auth)
   console.log('user', user);
@@ -286,7 +289,10 @@ function Header({
         </Col>
         <Col span={24} md={18} className="header-control">
         
-          <Button type="primary" onClick={showDrawer}>
+          <Button type="primary" onClick={() => {
+            console.log('logout');
+            dispatch(authLogout())
+          }}>
             Logout
           </Button>
           <Button
