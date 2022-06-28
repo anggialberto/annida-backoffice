@@ -275,7 +275,7 @@ const RegistrationStudent = () => {
       key: 'action',
       render: (text, record, index) => {
         console.log('approvalDocStatus' + index, record.approvalDocStatus);
-        console.log('approvalDocStatus' + index, record.approvalPaymentStatus);
+        console.log('approvalPayStatus' + index, record.approvalPaymentStatus);
 
         return (
           <div style={{ display: 'flex', gap: 10 }}>

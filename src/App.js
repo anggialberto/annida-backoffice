@@ -11,7 +11,10 @@ import RegistrationStudent from "./pages/RegistrationStudent";
 import AddSchoolYear from "./pages/SchoolYear/add";
 import EditSchoolYear from "./pages/SchoolYear/edit";
 import RegistrationDetail from "./pages/RegistrationStudent/detail";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";  
+import Religion from "./pages/Religion";
+import EditReligion from "./pages/Religion/edit";
+import AddReligion from "./pages/Religion/add";
 
 function App() {
   const { token, user, isLogin } = useSelector((state) => state.auth);
@@ -23,7 +26,10 @@ function App() {
       <Route exact path="/registration-student/:id" component={RegistrationDetail} />
       <Route exact path="/school-year" component={SchoolYear} />
       <Route exact path="/school-year/add" component={AddSchoolYear} />
-      <Route exact path="/school-year/edit" component={EditSchoolYear} />
+      <Route exact path="/school-year/edit/:id" component={EditSchoolYear} />
+      <Route exact path="/religion" component={Religion} />
+      <Route exact path="/religion/add" component={AddReligion} />
+      <Route exact path="/religion/edit/:id" component={EditReligion} /> 
       <Route exact path="/profile" component={Profile} />
       <Redirect from="*" to="/dashboard" />
     </Main>

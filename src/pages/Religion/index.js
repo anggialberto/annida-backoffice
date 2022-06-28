@@ -9,9 +9,8 @@ import {
   Tag,
   Modal,
   Button,
-  message
+  message,
 } from "antd";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 import { Link, useHistory} from "react-router-dom";
@@ -20,30 +19,25 @@ import http from "../../utils/http";
 const { Title } = Typography;
 
 
-const SchoolYear = () => {
+const Religion = () => {
   const history = useHistory();
   const [modalDelete, setModalDelete] = useState({
     visible: false,
     selectedId: '',
   });
-  const [schoolYear, setSchoolYear] = useState([]);
+  const [religion, setReligion] = useState([]);
   const [fetching, setFetching] = useState(false);
 
-  const getSchoolYear = async () => {
+  const getReligion = async () => {
     setFetching(true);
-    const response = await http.get('/school-year', {})
-    setSchoolYear(response)
+    const response = await http.get('/religion', {})
+    setReligion(response)
     setFetching(false)
   }
 
   useEffect(() => {
-    getSchoolYear();
+    getReligion();
   }, [JSON.stringify])
-
-  const getSchoolYearById = async (id) => {
-    const response = await axios.get(`http://localhost:8080/annida/religion/${id}`);
-    return response;
-  }
 
   const columns = [
     {
@@ -53,9 +47,9 @@ const SchoolYear = () => {
       render: (text, record, index) => <p>{index+1}</p>,
     },
     {
-      title: 'School Year',
-      dataIndex: 'content',
-      key: 'content',
+      title: 'Religion',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Created Date',
@@ -73,7 +67,7 @@ const SchoolYear = () => {
       render: (text, record, index) => {
         return (
           <div style={{ display: 'flex', gap: 10 }}>
-            <Button type="primary" onClick={() => history.push('/school-year/edit/' + record.id)}>Update</Button>
+            <Button type="primary" onClick={() => history.push('/religion/edit/' + record.id)}>Update</Button>
             <Button type="danger" onClick={() => {setModalDelete({...modalDelete, visible: true, selectedId: record.id})}}>
               Delete
             </Button>
@@ -96,10 +90,10 @@ const SchoolYear = () => {
               bordered={false}
               className="criclebox tablespace mb-24"
               style={{paddingRight: 20}}
-              title="School Year"
+              title="Religion"
               extra={
                 <>
-                  <Button onClick={() => {history.push('/school-year/add')}} type="primary">Add School Year</Button>
+                  <Button onClick={() => {history.push('/religion/add')}} type="primary">Add Religion</Button>
                 </>
               }
             >
@@ -107,7 +101,7 @@ const SchoolYear = () => {
                 <Table
                   columns={columns}
                   loading={fetching}
-                  dataSource={schoolYear?.data}
+                  dataSource={religion?.data}
                   pagination={true}
                   className="ant-border-space"
                 />
@@ -121,7 +115,7 @@ const SchoolYear = () => {
 
       <Modal
         visible={modalDelete.visible}
-        title="Delete School Year"
+        title="Delete Religion"
         onOk={null}
         onCancel={null}
         footer={null}
@@ -129,18 +123,22 @@ const SchoolYear = () => {
         {<p style={{fontWeight: "bold"}}>Are you sure?</p>}
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 20, paddingTop: 20}}>
           <Button type="primary"  onClick={() => {
-            http.delete('/school-year/' + modalDelete.selectedId, {})
+            http.delete('/religion/' + modalDelete.selectedId, {})
             setModalDelete({visible: false, selectedId: ''})
-            message.info('Success Delete School Year')
-            getSchoolYear();
+            message.info('Success Delete Religion')
+            getReligion();
           }}>Submit</Button>
           <Button type="ghost" onClick={() => {
-            setModalDelete({visible: false, selectedId: ''})
+            setModalDelete({visible: false, reason: '', selectedId: ''})
           }}>Cancel</Button>
         </div>
       </Modal>
+
+      
     </>
+
+    
   );
 }
 
-export default SchoolYear;
+export default Religion;
