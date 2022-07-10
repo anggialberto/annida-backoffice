@@ -156,10 +156,15 @@ const SchoolYear = () => {
       >
         {<p style={{fontWeight: "bold"}}>Are you sure?</p>}
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 20, paddingTop: 20}}>
-          <Button type="primary"  onClick={() => {
-            http.delete('/school-year/' + modalDelete.selectedId, {})
+          <Button type="primary"  onClick={async() => {
+            const result = await http.delete('/school-year/' + modalDelete.selectedId, {})
+            console.log('result', result)
+            if(result.code >= 400) {
+              message.error(result.message)
+            } else {
+              message.info('Success Delete School Year')
+            }
             setModalDelete({visible: false, selectedId: ''})
-            message.info('Success Delete School Year')
             getSchoolYear();
           }}>Submit</Button>
           <Button type="ghost" onClick={() => {

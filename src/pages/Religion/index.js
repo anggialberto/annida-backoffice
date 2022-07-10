@@ -150,10 +150,15 @@ const Religion = () => {
       >
         {<p style={{fontWeight: "bold"}}>Are you sure?</p>}
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 20, paddingTop: 20}}>
-          <Button type="primary"  onClick={() => {
-            http.delete('/religion/' + modalDelete.selectedId, {})
+          <Button type="primary"  onClick={async() => {
+            const result = await http.delete('/religion/' + modalDelete.selectedId, {})
+            if(result.code >= 400) {
+              message.error(result.message)
+            } else {
+              message.info('Success Delete Religion')
+
+            }
             setModalDelete({visible: false, selectedId: ''})
-            message.info('Success Delete Religion')
             getReligion();
           }}>Submit</Button>
           <Button type="ghost" onClick={() => {
