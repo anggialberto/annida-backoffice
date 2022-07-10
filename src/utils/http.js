@@ -26,7 +26,7 @@ function handleError(error) {
 
 const httpInstance = axios.create({
     timeout: 60000,
-    baseURL: `https://b361-180-252-172-186.ap.ngrok.io/annida`
+    baseURL: `http://localhost:8080/annida`
 });
 
 Object.setPrototypeOf(httpInstance, axios);
