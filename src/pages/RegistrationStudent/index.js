@@ -208,6 +208,11 @@ const RegistrationStudent = () => {
       }
     },
     {
+      title: 'Last Approved or Rejected by',
+      dataIndex: ['user', 'username'],
+      key: ['user', 'username'],
+    },
+    {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
